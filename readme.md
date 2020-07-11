@@ -4,6 +4,13 @@ My Rust implementation of the famous little game. This is my first ever Rust cod
 
 In it's current state the game is not yet functional and tests remain to be added. Some main pieces missing: merge of tiles, game loop. I am a heretic and commiting to master.
 
+## Usage
+
+* Check out code
+* `cargo run`
+* press arrow keys on the keyboard
+* drink responsibly
+
 ## Roadmap
 
 * v0.1.* - I am going to keep everything in hardcoded 4*4 array, command line only
