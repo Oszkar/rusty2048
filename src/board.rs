@@ -30,15 +30,15 @@ impl Board {
     }
 
     fn contains_zero(&self) -> bool {
-        let mut zeros = false;
+        let mut is_zero = false;
 
         for j in 0..self.size() {
             for i in 0..self.size() {
-                if self.array[i as usize][j as usize] == 0 { zeros = true; }
+                if self.array[i as usize][j as usize] == 0 { is_zero = true; }
             }
         }
 
-        zeros
+        is_zero
     }
 }
 
@@ -66,17 +66,22 @@ impl Default for Board {
 }
 
 impl Moves for Board {
-    // TODO big logic flaw: currently moves only shift by one position. They need to shift across the whole row/col
-
     fn move_right(&mut self) -> bool {
         let mut moved = false;
 
         // we're going down from size-2. Rightmost column will never move to the right
-        for j in 0..self.size() {
-            for i in (0..(self.size() - 1)).rev() {
-                if self.array[j as usize][(i + 1) as usize ] == 0 && self.array[j as usize][i as usize] != 0 {
-                    self.array[j as usize][(i + 1) as usize ] = self.array[j as usize][i as usize];
-                    self.array[j as usize][i as usize ] = 0;
+        for row in 0..self.size() {
+            for col in (0..(self.size() - 1)).rev() {
+                let mut zeros_to_the_right = 0;
+                // this loop will go "ahead" and check how many zeros we have to the right (i.e. how many places we need to move the current item)
+                while (col + zeros_to_the_right + 1) < self.size() && self.array[row as usize][(col + zeros_to_the_right + 1) as usize ] == 0 {
+                    // we might never hit this part
+                    zeros_to_the_right += 1;
+                }
+                // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
+                if zeros_to_the_right > 0 && self.array[row as usize][col as usize ] != 0 {
+                    self.array[row as usize][(col + zeros_to_the_right) as usize ] = self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize ] = 0;
                     moved = true;
                 }
             }
@@ -88,11 +93,18 @@ impl Moves for Board {
         let mut moved = false;
 
         // we're going up from 1 to size-1. Leftmost column will never move to the left
-        for j in 0..self.size() {
-            for i in 1..self.size() {
-                if self.array[j as usize][(i - 1) as usize ] == 0 && self.array[j as usize][i as usize] != 0 {
-                    self.array[j as usize][(i - 1) as usize ] = self.array[j as usize][i as usize];
-                    self.array[j as usize][i as usize ] = 0;
+        for row in 0..self.size() {
+            for col in 1..self.size() {
+                let mut zeros_to_the_left = 0;
+                // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
+                while (col - zeros_to_the_left) > 0 && self.array[row as usize][(col - zeros_to_the_left - 1) as usize ] == 0 {
+                    // we might never hit this part
+                    zeros_to_the_left += 1;
+                }
+                // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
+                if zeros_to_the_left > 0 && self.array[row as usize][col as usize ] != 0 {
+                    self.array[row as usize][(col - zeros_to_the_left) as usize ] = self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize ] = 0;
                     moved = true;
                 }
             }
@@ -104,11 +116,18 @@ impl Moves for Board {
         let mut moved = false;
 
         // we're going up from 0 to size-1 but this time on the other axis. Bottom row will never move down
-        for j in 1..self.size() {
-            for i in 0..self.size() {
-                if self.array[(j - 1) as usize][i as usize ] == 0 && self.array[j as usize][i as usize] != 0 {
-                    self.array[(j - 1) as usize][i as usize ] = self.array[j as usize][i as usize];
-                    self.array[j as usize][i as usize ] = 0;
+        for row in 1..self.size() {
+            for col in 0..self.size() {
+                let mut zeros_to_the_top = 0;
+                // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
+                while (row - zeros_to_the_top) > 0 && self.array[(row - zeros_to_the_top - 1) as usize][col as usize ] == 0 {
+                    // we might never hit this part
+                    zeros_to_the_top += 1;
+                }
+                // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
+                if zeros_to_the_top > 0 && self.array[row as usize][col as usize ] != 0 {
+                    self.array[(row - zeros_to_the_top) as usize][col as usize ] = self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize ] = 0;
                     moved = true;
                 }
             }
@@ -120,11 +139,18 @@ impl Moves for Board {
         let mut moved = false;
 
         // we're going down from size-2 but this time on the other axis. Top row will never move up
-        for j in (0..(self.size() - 1)).rev() {
-            for i in 0..self.size() {
-                if self.array[(j + 1) as usize][i as usize ] == 0 && self.array[j as usize][i as usize] != 0 {
-                    self.array[(j + 1) as usize][i as usize ] = self.array[j as usize][i as usize];
-                    self.array[j as usize][i as usize ] = 0;
+        for row in (0..(self.size() - 1)).rev() {
+            for col in 0..self.size() {
+                let mut zeros_to_the_bottom = 0;
+                // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
+                while (row + zeros_to_the_bottom + 1) < self.size() && self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize ] == 0 {
+                    // we might never hit this part
+                    zeros_to_the_bottom += 1;
+                }
+                // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
+                if zeros_to_the_bottom > 0 && self.array[row as usize][col as usize ] != 0 {
+                    self.array[(row + zeros_to_the_bottom) as usize][col as usize ] = self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize ] = 0;
                     moved = true;
                 }
             }
