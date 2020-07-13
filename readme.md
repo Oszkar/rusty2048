@@ -2,7 +2,7 @@
 
 My Rust implementation of the famous little game. This is my first ever Rust code so bear with me. Some stuff is mixed between methods or traits, I'm just experimenting. I'm pretty sure I'm violating best practices here and there, input is welcome.
 
-In it's current state the game is not yet functional and tests remain to be added. Some main pieces missing: merge of tiles, game loop. I am a heretic and commiting to master.
+In it's current state the game is not fully functional and tests remain to be added. Some main pieces missing: proper game loop / statemachine. I am a heretic and commiting to master.
 
 ## Usage
 

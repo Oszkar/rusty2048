@@ -78,6 +78,11 @@ impl Moves for Board {
         // we're going down from size-2. Rightmost column will never move to the right
         for row in 0..self.size() {
             for col in (0..(self.size() - 1)).rev() {
+                // if the current item is 0, nothing to do
+                if self.array[row as usize][col as usize] == 0 {
+                    continue;
+                }
+
                 let mut zeros_to_the_right = 0;
                 // this loop will go "ahead" and check how many zeros we have to the right (i.e. how many places we need to move the current item)
                 while (col + zeros_to_the_right + 1) < self.size()
@@ -87,9 +92,21 @@ impl Moves for Board {
                     zeros_to_the_right += 1;
                 }
                 // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
-                if zeros_to_the_right > 0 && self.array[row as usize][col as usize] != 0 {
+                if zeros_to_the_right > 0 {
                     self.array[row as usize][(col + zeros_to_the_right) as usize] =
                         self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize] = 0;
+                    moved = true;
+                }
+
+                // finally, let's check if we ended up next to a number that is same as the current one (except if it's the rightmost column)
+                // if it's the same, let's add them together
+                if (col + zeros_to_the_right + 1) < self.size()
+                    && self.array[row as usize][(col + zeros_to_the_right) as usize]
+                        == self.array[row as usize][(col + zeros_to_the_right + 1) as usize]
+                {
+                    self.array[row as usize][(col + zeros_to_the_right + 1) as usize] =
+                        self.array[row as usize][(col + zeros_to_the_right) as usize] * 2;
                     self.array[row as usize][col as usize] = 0;
                     moved = true;
                 }
@@ -104,6 +121,11 @@ impl Moves for Board {
         // we're going up from 1 to size-1. Leftmost column will never move to the left
         for row in 0..self.size() {
             for col in 1..self.size() {
+                // if the current item is 0, nothing to do
+                if self.array[row as usize][col as usize] == 0 {
+                    continue;
+                }
+
                 let mut zeros_to_the_left = 0;
                 // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
                 while (col - zeros_to_the_left) > 0
@@ -113,9 +135,21 @@ impl Moves for Board {
                     zeros_to_the_left += 1;
                 }
                 // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
-                if zeros_to_the_left > 0 && self.array[row as usize][col as usize] != 0 {
+                if zeros_to_the_left > 0 {
                     self.array[row as usize][(col - zeros_to_the_left) as usize] =
                         self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize] = 0;
+                    moved = true;
+                }
+
+                // finally, let's check if we ended up next to a number that is same as the current one (except if it's the leftmost column)
+                // if it's the same, let's add them together
+                if (col - zeros_to_the_left) > 0
+                    && self.array[row as usize][(col - zeros_to_the_left - 1) as usize]
+                        == self.array[row as usize][(col - zeros_to_the_left) as usize]
+                {
+                    self.array[row as usize][(col - zeros_to_the_left - 1) as usize] =
+                        self.array[row as usize][(col - zeros_to_the_left) as usize] * 2;
                     self.array[row as usize][col as usize] = 0;
                     moved = true;
                 }
@@ -130,6 +164,11 @@ impl Moves for Board {
         // we're going up from 0 to size-1 but this time on the other axis. Bottom row will never move down
         for row in 1..self.size() {
             for col in 0..self.size() {
+                // if the current item is 0, nothing to do
+                if self.array[row as usize][col as usize] == 0 {
+                    continue;
+                }
+
                 let mut zeros_to_the_top = 0;
                 // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
                 while (row - zeros_to_the_top) > 0
@@ -139,9 +178,21 @@ impl Moves for Board {
                     zeros_to_the_top += 1;
                 }
                 // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
-                if zeros_to_the_top > 0 && self.array[row as usize][col as usize] != 0 {
+                if zeros_to_the_top > 0 {
                     self.array[(row - zeros_to_the_top) as usize][col as usize] =
                         self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize] = 0;
+                    moved = true;
+                }
+
+                // finally, let's check if we ended up next to a number that is same as the current one (except if it's the bottom column)
+                // if it's the same, let's add them together
+                if (row - zeros_to_the_top) > 0
+                    && self.array[(row - zeros_to_the_top) as usize][col as usize]
+                        == self.array[(row - zeros_to_the_top - 1) as usize][col as usize]
+                {
+                    self.array[(row - zeros_to_the_top - 1) as usize][col as usize] =
+                        self.array[(row - zeros_to_the_top) as usize][col as usize] * 2;
                     self.array[row as usize][col as usize] = 0;
                     moved = true;
                 }
@@ -156,6 +207,11 @@ impl Moves for Board {
         // we're going down from size-2 but this time on the other axis. Top row will never move up
         for row in (0..(self.size() - 1)).rev() {
             for col in 0..self.size() {
+                // if the current item is 0, nothing to do
+                if self.array[row as usize][col as usize] == 0 {
+                    continue;
+                }
+
                 let mut zeros_to_the_bottom = 0;
                 // this loop will go "ahead" and check how many zeros we have to the left (i.e. how many places we need to move the current item)
                 while (row + zeros_to_the_bottom + 1) < self.size()
@@ -165,9 +221,21 @@ impl Moves for Board {
                     zeros_to_the_bottom += 1;
                 }
                 // the second clause is there to prevent us from moving zeros (zeros represent empty tile)
-                if zeros_to_the_bottom > 0 && self.array[row as usize][col as usize] != 0 {
+                if zeros_to_the_bottom > 0 {
                     self.array[(row + zeros_to_the_bottom) as usize][col as usize] =
                         self.array[row as usize][col as usize];
+                    self.array[row as usize][col as usize] = 0;
+                    moved = true;
+                }
+
+                // finally, let's check if we ended up next to a number that is same as the current one (except if it's the bottom column)
+                // if it's the same, let's add them together
+                if (row + zeros_to_the_bottom + 1) < self.size()
+                    && self.array[(row + zeros_to_the_bottom) as usize][col as usize]
+                        == self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize]
+                {
+                    self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize] =
+                        self.array[(row + zeros_to_the_bottom) as usize][col as usize] * 2;
                     self.array[row as usize][col as usize] = 0;
                     moved = true;
                 }
