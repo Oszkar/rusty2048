@@ -1,6 +1,6 @@
 #[path = "utils.rs"] // TODO why do I need to do this? Should I put stuff in subfolders? Am I messing something up?
 mod utils;
-use utils::{gib_loc, gib_num};
+use utils::{gib_empty_loc, gib_num};
 
 pub trait Moves {
     fn move_right(&mut self) -> bool;
@@ -16,7 +16,7 @@ pub struct Board {
 
 impl Board {
     pub fn spawn(&mut self) {
-        let (i, j) = gib_loc(self.array);
+        let (i, j) = gib_empty_loc(self.array);
         self.array[i as usize][j as usize] = gib_num();
     }
 
@@ -59,11 +59,11 @@ impl Default for Board {
         // I just thought u16 is small enough and now it is all over the code
         // TODO variable board size
         let mut array = [[0; 4]; 4];
-        let (ai, aj) = gib_loc(array);
+        let (ai, aj) = gib_empty_loc(array);
         let (bi, bj) = loop {
             // need to ensure that the 2 indices are different
             // TODO though actually do we? :) if we don't, we can just use spawn()
-            let (tmpi, tmpj) = gib_loc(array);
+            let (tmpi, tmpj) = gib_empty_loc(array);
             if ai != tmpi || aj != tmpj {
                 break (tmpi, tmpj);
             }
