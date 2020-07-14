@@ -69,7 +69,7 @@ fn tear_down(done: EndState) {
             process::exit(0);
         }
         EndState::Win => {
-            println!("GG");
+            println!("{}", "Congratulations, you won!".green());
             process::exit(0);
         }
         EndState::Lose => {
@@ -119,7 +119,11 @@ fn main() {
             _ => (), // we don't care about mouse and resize events for now
         }
         print_matrix(&b.array);
-        if !b.moves_available() {
+
+        // after the move, check the state
+        if b.is_won() {
+            tear_down(EndState::Win);
+        } else if !b.moves_available() {
             tear_down(EndState::Lose);
         }
     }

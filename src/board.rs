@@ -30,15 +30,20 @@ impl Board {
 
     pub fn moves_available(&self) -> bool {
         // TODO this is not a full logic yet, determining whether there are moves should also involve merges
-        self.contains_zero()
+        self.contains_num(0)
     }
 
-    fn contains_zero(&self) -> bool {
+    pub fn is_won(&self) -> bool {
+        // TODO the number should be configurable eventually
+        self.contains_num(2048)
+    }
+
+    fn contains_num(&self, num: u16) -> bool {
         let mut is_zero = false;
 
         for j in 0..self.size() {
             for i in 0..self.size() {
-                if self.array[i as usize][j as usize] == 0 {
+                if self.array[i as usize][j as usize] == num {
                     is_zero = true;
                 }
             }
