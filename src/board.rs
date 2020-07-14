@@ -107,7 +107,7 @@ impl Moves for Board {
                 {
                     self.array[row as usize][(col + zeros_to_the_right + 1) as usize] =
                         self.array[row as usize][(col + zeros_to_the_right) as usize] * 2;
-                    self.array[row as usize][col as usize] = 0;
+                    self.array[row as usize][(col + zeros_to_the_right) as usize] = 0;
                     moved = true;
                 }
             }
@@ -150,7 +150,7 @@ impl Moves for Board {
                 {
                     self.array[row as usize][(col - zeros_to_the_left - 1) as usize] =
                         self.array[row as usize][(col - zeros_to_the_left) as usize] * 2;
-                    self.array[row as usize][col as usize] = 0;
+                    self.array[row as usize][(col - zeros_to_the_left) as usize] = 0;
                     moved = true;
                 }
             }
@@ -193,7 +193,7 @@ impl Moves for Board {
                 {
                     self.array[(row - zeros_to_the_top - 1) as usize][col as usize] =
                         self.array[(row - zeros_to_the_top) as usize][col as usize] * 2;
-                    self.array[row as usize][col as usize] = 0;
+                    self.array[(row - zeros_to_the_top) as usize][col as usize] = 0;
                     moved = true;
                 }
             }
@@ -236,7 +236,7 @@ impl Moves for Board {
                 {
                     self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize] =
                         self.array[(row + zeros_to_the_bottom) as usize][col as usize] * 2;
-                    self.array[row as usize][col as usize] = 0;
+                    self.array[(row + zeros_to_the_bottom) as usize][col as usize] = 0;
                     moved = true;
                 }
             }
