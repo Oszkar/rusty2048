@@ -1,3 +1,11 @@
+use crossterm::{
+    cursor,
+    style::Colorize,
+    terminal::{Clear, ClearType},
+    ExecutableCommand,
+};
+use std::{io::stdout, fmt};
+
 #[path = "utils.rs"] // TODO why do I need to do this? Should I put stuff in subfolders? Am I messing something up?
 mod utils;
 use utils::{gib_empty_loc, gib_num};
@@ -11,7 +19,7 @@ pub trait Moves {
 
 pub struct Board {
     // TODO remove pub
-    pub array: [[u16; 4]; 4],
+    array: [[u16; 4]; 4],
 }
 
 impl Board {
@@ -247,5 +255,48 @@ impl Moves for Board {
             }
         }
         moved
+    }
+}
+
+impl fmt::Display for Board {
+    fn fmt(&self, _f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut stdout = stdout();
+        // TODO should we panic here just because screen operation failed? It is quite unexpected...
+        stdout
+            .execute(Clear(ClearType::All))
+            .expect("Terminal screen clearing failed.");
+        stdout
+            .execute(cursor::MoveTo(0, 0))
+            .expect("Terminal cursor updat failed.");
+
+        println!(
+            "{}",
+            "Welcome to the Matrix. You know the drill. Just use the arrows".blue()
+        );
+        println!();
+
+        for (_i, row) in self.array.iter().enumerate() {
+            for (_j, item) in row.iter().enumerate() {
+                // TODO maybe add some sort of colormap instead of big if-else
+                if *item == 0 {
+                    print!("{:3} ", item);
+                } else if *item == 2 || *item == 4 {
+                    // bit hacky but we need to do the format first, we can only add color to string or &str
+                    print!("{} ", format!("{:3}", item).yellow());
+                } else if *item == 8 || *item == 16 {
+                    print!("{} ", format!("{:3}", item).magenta());
+                } else if *item == 32 || *item == 64 {
+                    print!("{} ", format!("{:3}", item).cyan());
+                } else if *item == 128 || *item == 256 {
+                    print!("{} ", format!("{:3}", item).blue());
+                } else if *item == 512 || *item == 1024 {
+                    print!("{} ", format!("{:3}", item).green());
+                } else if *item == 2048 {
+                    print!("{} ", format!("{:3}", item).red());
+                }
+            }
+            println!();
+        }
+        Ok(())
     }
 }
