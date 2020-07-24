@@ -9,6 +9,9 @@ use std::{io::stdout, fmt};
 mod utils;
 use utils::{gib_empty_loc, gib_num};
 
+#[cfg(test)]
+mod board_tests;
+
 pub trait Moves {
     fn move_right(&mut self) -> bool;
     fn move_left(&mut self) -> bool;
@@ -57,6 +60,11 @@ impl Board {
 
         is_zero
     }
+
+    // TODO might not need this
+    // fn set_board(&mut self, array: [[u16; 4]; 4]) {
+    //     self.array = array;
+    // }
 }
 
 impl Default for Board {

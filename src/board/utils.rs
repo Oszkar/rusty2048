@@ -14,6 +14,7 @@ pub fn gib_num() -> u16 {
 pub fn gib_empty_loc(arr: [[u16; 4]; 4]) -> (u16, u16) {
     let mut rng = rand::thread_rng();
 
+    // TODO what if there is no empty?
     let idx = loop {
         let i = rng.gen_range(0, 4);
         let j = rng.gen_range(0, 4);
