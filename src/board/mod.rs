@@ -6,7 +6,6 @@ use crossterm::{
 };
 use std::{io::stdout, fmt};
 
-#[path = "utils.rs"] // TODO why do I need to do this? Should I put stuff in subfolders? Am I messing something up?
 mod utils;
 use utils::{gib_empty_loc, gib_num};
 
@@ -18,7 +17,6 @@ pub trait Moves {
 }
 
 pub struct Board {
-    // TODO remove pub
     array: [[u16; 4]; 4],
 }
 
