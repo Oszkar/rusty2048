@@ -96,6 +96,8 @@ impl Moves for Board {
 
         // we're going down from size-2. Rightmost column will never move to the right
         for row in 0..self.size() {
+            let mut merged = false;
+
             for col in (0..(self.size() - 1)).rev() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
@@ -123,11 +125,18 @@ impl Moves for Board {
                 if (col + zeros_to_the_right + 1) < self.size()
                     && self.array[row as usize][(col + zeros_to_the_right) as usize]
                         == self.array[row as usize][(col + zeros_to_the_right + 1) as usize]
+                    && !merged
                 {
                     self.array[row as usize][(col + zeros_to_the_right + 1) as usize] =
                         self.array[row as usize][(col + zeros_to_the_right) as usize] * 2;
                     self.array[row as usize][(col + zeros_to_the_right) as usize] = 0;
                     moved = true;
+                    merged = true;
+                } else {
+                    // this whole merged clause is needed so we don't double-merge in a case of:
+                    // 4, 4, 2, 2 -> (move right) -> 0, 4, 4, 4
+                    // this case we need some dirty flag that the rightmost 4 is from merge and we shouldn't further merge into it
+                    merged = false;
                 }
             }
         }
@@ -139,6 +148,8 @@ impl Moves for Board {
 
         // we're going up from 1 to size-1. Leftmost column will never move to the left
         for row in 0..self.size() {
+            let mut merged = false;
+
             for col in 1..self.size() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
@@ -166,11 +177,18 @@ impl Moves for Board {
                 if (col - zeros_to_the_left) > 0
                     && self.array[row as usize][(col - zeros_to_the_left - 1) as usize]
                         == self.array[row as usize][(col - zeros_to_the_left) as usize]
+                    && !merged
                 {
                     self.array[row as usize][(col - zeros_to_the_left - 1) as usize] =
                         self.array[row as usize][(col - zeros_to_the_left) as usize] * 2;
                     self.array[row as usize][(col - zeros_to_the_left) as usize] = 0;
                     moved = true;
+                    merged = true;
+                } else {
+                    // this whole merged clause is needed so we don't double-merge in a case of:
+                    // 2, 2, 4, 4 -> (move left) -> 4, 4, 4, 0
+                    // this case we need some dirty flag that the leftmost 4 is from merge and we shouldn't further merge into it
+                    merged = false;
                 }
             }
         }
@@ -182,6 +200,8 @@ impl Moves for Board {
 
         // we're going up from 0 to size-1 but this time on the other axis. Bottom row will never move down
         for row in 1..self.size() {
+            let mut merged = false;
+
             for col in 0..self.size() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
@@ -209,11 +229,15 @@ impl Moves for Board {
                 if (row - zeros_to_the_top) > 0
                     && self.array[(row - zeros_to_the_top) as usize][col as usize]
                         == self.array[(row - zeros_to_the_top - 1) as usize][col as usize]
+                    && !merged
                 {
                     self.array[(row - zeros_to_the_top - 1) as usize][col as usize] =
                         self.array[(row - zeros_to_the_top) as usize][col as usize] * 2;
                     self.array[(row - zeros_to_the_top) as usize][col as usize] = 0;
                     moved = true;
+                    merged = true;
+                } else {
+                    merged = false;
                 }
             }
         }
@@ -225,6 +249,8 @@ impl Moves for Board {
 
         // we're going down from size-2 but this time on the other axis. Top row will never move up
         for row in (0..(self.size() - 1)).rev() {
+            let mut merged = false;
+
             for col in 0..self.size() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
@@ -252,11 +278,15 @@ impl Moves for Board {
                 if (row + zeros_to_the_bottom + 1) < self.size()
                     && self.array[(row + zeros_to_the_bottom) as usize][col as usize]
                         == self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize]
+                    && !merged
                 {
                     self.array[(row + zeros_to_the_bottom + 1) as usize][col as usize] =
                         self.array[(row + zeros_to_the_bottom) as usize][col as usize] * 2;
                     self.array[(row + zeros_to_the_bottom) as usize][col as usize] = 0;
                     moved = true;
+                    merged = true;
+                } else {
+                    merged = false;
                 }
             }
         }
