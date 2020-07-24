@@ -199,10 +199,10 @@ impl Moves for Board {
         let mut moved = false;
 
         // we're going up from 0 to size-1 but this time on the other axis. Bottom row will never move down
-        for row in 1..self.size() {
+        for col in 0..self.size() {
             let mut merged = false;
 
-            for col in 0..self.size() {
+            for row in 1..self.size() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
                     continue;
@@ -248,10 +248,10 @@ impl Moves for Board {
         let mut moved = false;
 
         // we're going down from size-2 but this time on the other axis. Top row will never move up
-        for row in (0..(self.size() - 1)).rev() {
+        for col in 0..self.size() {
             let mut merged = false;
 
-            for col in 0..self.size() {
+            for row in (0..(self.size() - 1)).rev() {
                 // if the current item is 0, nothing to do
                 if self.array[row as usize][col as usize] == 0 {
                     continue;
