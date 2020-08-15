@@ -6,7 +6,7 @@ use std::{process};
 // TODO I might want to play with the log crate
 
 mod board;
-use board::{Board, Moves};
+use board::{Board, Moves, utils::MoveDirection};
 
 #[allow(dead_code)]
 enum EndState {
@@ -21,7 +21,7 @@ fn tear_down(done: EndState) {
     // TODO better messages
     match done {
         EndState::UserQuit => {
-            println!("Kabbe gyikok");
+            println!("Thanks for playing. Bye!");
             process::exit(0);
         }
         EndState::Win => {
@@ -48,26 +48,10 @@ fn main() {
             Event::Key(event) => {
                 match event.code {
                     // TODO move this logic into Board
-                    KeyCode::Up => {
-                        if b.move_up() {
-                            b.spawn();
-                        }
-                    }
-                    KeyCode::Down => {
-                        if b.move_down() {
-                            b.spawn();
-                        }
-                    }
-                    KeyCode::Left => {
-                        if b.move_left() {
-                            b.spawn();
-                        }
-                    }
-                    KeyCode::Right => {
-                        if b.move_right() {
-                            b.spawn();
-                        }
-                    }
+                    KeyCode::Up => { b.move_in_dir(MoveDirection::Up).expect("Move Error"); }
+                    KeyCode::Down => { b.move_in_dir(MoveDirection::Down).expect("Move Error"); }
+                    KeyCode::Left => { b.move_in_dir(MoveDirection::Left).expect("Move Error"); }
+                    KeyCode::Right => { b.move_in_dir(MoveDirection::Right).expect("Move Error"); }
                     KeyCode::Esc => tear_down(EndState::UserQuit),
                     _ => (),
                 }

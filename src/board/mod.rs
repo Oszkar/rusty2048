@@ -6,13 +6,15 @@ use crossterm::{
 };
 use std::{io::stdout, fmt};
 
-mod utils;
-use utils::{gib_empty_loc, gib_num};
+pub mod utils;
+use utils::{gib_empty_loc, gib_num, MoveDirection};
 
 #[cfg(test)]
 mod board_tests;
 
 pub trait Moves {
+    fn move_in_dir(&mut self, direction: MoveDirection) -> Result<(), &'static str>;
+    // this doesn't need to be trait so I could make these private. But I was experimenting with traits :)
     fn move_right(&mut self) -> bool;
     fn move_left(&mut self) -> bool;
     fn move_up(&mut self) -> bool;
@@ -91,6 +93,29 @@ impl Default for Board {
 }
 
 impl Moves for Board {
+    fn move_in_dir(&mut self, direction: MoveDirection) -> Result<(), &'static str> {
+            let val = match direction {
+                MoveDirection::Right => {
+                    self.move_right()
+                }
+                MoveDirection::Left => {
+                    self.move_left()
+                }
+                MoveDirection::Down  => {
+                    self.move_down()
+                }
+                MoveDirection::Up => {
+                    self.move_up()
+                }
+            };
+
+            if val {
+                Ok(())
+            } else {
+                Err("Unexpected error while trying to move")
+            }
+    }
+
     fn move_right(&mut self) -> bool {
         let mut moved = false;
 

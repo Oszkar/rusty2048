@@ -1,5 +1,12 @@
 use rand::Rng;
 
+pub enum MoveDirection {
+    Left,
+    Right,
+    Up,
+    Down
+}
+
 pub fn gib_num() -> u16 {
     let mut rng = rand::thread_rng();
     // TODO is 5% chance for a 4 OK? Should it increase in later stages of the game?
