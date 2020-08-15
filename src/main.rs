@@ -47,11 +47,10 @@ fn main() {
         match read().expect("Something went very wrong with the keyboard input.") {
             Event::Key(event) => {
                 match event.code {
-                    // TODO move this logic into Board
-                    KeyCode::Up => { b.move_in_dir(MoveDirection::Up).expect("Move Error"); }
-                    KeyCode::Down => { b.move_in_dir(MoveDirection::Down).expect("Move Error"); }
-                    KeyCode::Left => { b.move_in_dir(MoveDirection::Left).expect("Move Error"); }
-                    KeyCode::Right => { b.move_in_dir(MoveDirection::Right).expect("Move Error"); }
+                    KeyCode::Up | KeyCode::Char('w') => { b.move_in_dir(MoveDirection::Up).expect("Move Error"); }
+                    KeyCode::Down | KeyCode::Char('s')  => { b.move_in_dir(MoveDirection::Down).expect("Move Error"); }
+                    KeyCode::Left | KeyCode::Char('a')  => { b.move_in_dir(MoveDirection::Left).expect("Move Error"); }
+                    KeyCode::Right | KeyCode::Char('d')  => { b.move_in_dir(MoveDirection::Right).expect("Move Error"); }
                     KeyCode::Esc => tear_down(EndState::UserQuit),
                     _ => (),
                 }

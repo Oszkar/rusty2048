@@ -110,10 +110,11 @@ impl Moves for Board {
             };
 
             if val {
-                Ok(())
-            } else {
-                Err("Unexpected error while trying to move")
+                self.spawn();
             }
+
+            // TODO more error handling here? Should we ever panic here?
+            Ok(())
     }
 
     fn move_right(&mut self) -> bool {
@@ -332,7 +333,7 @@ impl fmt::Display for Board {
 
         println!(
             "{}",
-            "Welcome to the Matrix. You know the drill. Just use the arrows".blue()
+            "Welcome to the Matrix. You know the drill. Just use the arrows or the WASD keys".blue()
         );
         println!();
 

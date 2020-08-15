@@ -13,6 +13,11 @@ I am a heretic and commiting to master, I'll create release branches later.
 * press arrow keys on the keyboard
 * drink responsibly
 
+## Current TODOs/known issues
+* arrow keys handling does not seem to work on linux (at least on WSL)
+* moves_available() function's logic is not complete yet
+* need to clear out some TODOs as commented
+
 ## Roadmap
 
 * v0.1.* - I am going to keep everything in hardcoded 4*4 array, command line only
