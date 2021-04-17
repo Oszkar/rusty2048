@@ -326,14 +326,14 @@ impl fmt::Display for Board {
         // TODO should we panic here just because screen operation failed? It is quite unexpected...
         stdout
             .execute(Clear(ClearType::All))
-            .expect("Terminal screen clearing failed.");
+            .expect("Terminal screen clearing failed.\r");
         stdout
             .execute(cursor::MoveTo(0, 0))
-            .expect("Terminal cursor updat failed.");
+            .expect("Terminal cursor updat failed.\r");
 
         println!(
             "{}",
-            "Welcome to the Matrix. You know the drill. Just use the arrows or the WASD keys".blue()
+            "Welcome to the Matrix. You know the drill. Just use the arrows or the WASD keys\r".blue()
         );
         println!();
 
@@ -357,7 +357,7 @@ impl fmt::Display for Board {
                     print!("{} ", format!("{:3}", item).red());
                 }
             }
-            println!();
+            println!("\r");
         }
         Ok(())
     }

@@ -4,7 +4,9 @@ My Rust implementation of the famous little game. This is my first ever Rust cod
 Some stuff is mixed between methods or traits, I'm just experimenting. I'm pretty sure I'm violating best practices here and there, input is welcome.
 
 In it's current state the game is not fully complete, tests remain to be added, bugs might be present.
-I am a heretic and commiting to master, I'll create release branches later.
+I am a heretic and commiting to master.
+
+On linux, the terminal is set to raw mode. This is to avoid the need of hitting ENTER after a keypress. This will unfortunately disable CTRL+C and I also had to add carriage return characters to the printouts (raw mode also disables carriage return). I am yet to find a better solution for this.
 
 ## Usage
 
@@ -14,7 +16,6 @@ I am a heretic and commiting to master, I'll create release branches later.
 * drink responsibly
 
 ## Current TODOs/known issues
-* arrow keys handling does not seem to work on linux (at least on WSL)
 * moves_available() function's logic is not complete yet
 * need to clear out some TODOs as commented
 
